@@ -21,7 +21,8 @@ import Regist from '@/components/Regist.vue'
 import Footer from '@/components/Footer.vue'
 import Detail from '@/components/Detail.vue'
 import DetailHeader from '@/components/DetailHeader.vue'
-import DetailFooter from '@/components/DetailFooter.vue'
+import Pingjia from '@/components/Pingjia.vue'
+import PingjiaHeader from '@/components/PingjiaHeader.vue'
 
 export default new Router({
   routes: [
@@ -95,12 +96,20 @@ export default new Router({
     	}
     },
     {
+    	path:'/pingjia/:goods_pid',
+    	name:'pingjia',
+    	components:{
+    		header:PingjiaHeader,
+    		content:Pingjia
+    	}
+    },
+    {
     	path:'/detail/:goods_id',
     	name:'detail',
     	components:{
     		header:DetailHeader,
     		content:Detail,
-    		footer:DetailFooter
+    		
     	}
     },
     {

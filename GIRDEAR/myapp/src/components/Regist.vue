@@ -119,17 +119,6 @@ export default{
 	              position: 'bottom',
 	              duration: 2000
 	            });
-			}else{
-				this.time=60;
-                if (this.time > 0) {
-                     this.time--;
-                     this.yz=this.time+"s后重新获取";
-                     setTimeout(this.timer, 1000);
-                } else{
-                     this.time=0;
-                     this.yz="获取验证码";
-                     
-                }    
 			}
 		}
 	}

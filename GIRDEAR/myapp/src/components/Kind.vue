@@ -109,7 +109,7 @@ export default{
 	    	  height: 49px;
 			  line-height: 49px;
 			  border-bottom: 1px solid #e0e0e0;
-			  
+			  overflow: hidden;
 			  background: #f3f4f6;
 			  text-align: center;
 			  a{

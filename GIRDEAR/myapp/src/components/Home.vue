@@ -14,59 +14,38 @@
 		<img src="../img/home-img9.jpg"  id="h_zhapian"/>
 		<img src="../img/home-img10.jpeg" id="h_qiudong" />
 		<div id="h_qiud_neir1">
-			<div class="h_qiud_xiaoneir1">
-				<img src="../img/home-qiud-img1.jpg" class="h_qiud_neir1-img1"/>
+			<div v-for="item in homeList" class="h_qiud_xiaoneir1">
+				<router-link :to="{name:'detail',params:{goods_id:item.goods_id}}">
+					<img :src="item.goods_thumb" class="h_qiud_neir1-img1"/>
+				</router-link>
 				<div style="overflow:hidden;line-height:30px;text-align:center;">
-					<span class="pull-left">￥600</span> 
-                    <span>翻领牛仔外套</span>                                    
+					<span class="pull-left">{{item.shop_price}}</span> 
+                    <span>{{item.goods_name}}</span>                                    
                 </div>
 			</div>			
-			<div class="h_qiud_xiaoneir2"> 
-				<img src="../img/home-qiud-img2.jpg" class="h_qiud_neir1-img2"/> 
-				<div style="overflow:hidden;line-height:30px;text-align:center;">
-					<span class="pull-left">￥500</span>
-                    <span>针织衫（附飘带）</span>                   
-                </div>
-			</div>			
+				
 		</div>
-		<div id="h_qiud_neir2">
-			<div class="h_qiud_xiaoneir1">
-				<img src="../img/home-qiud-img3.jpg" class="h_qiud_neir1-img1"/>
-				<div style="overflow:hidden;line-height:30px;text-align:center;">
-					<span class="pull-left">￥600</span> 
-                    <span>翻领牛仔外套</span>                                    
-                </div>
-			</div>			
-			<div class="h_qiud_xiaoneir2"> 
-				<img src="../img/home-qiud-img4.jpg" class="h_qiud_neir1-img2"/> 
-				<div style="overflow:hidden;line-height:30px;text-align:center;">
-					<span class="pull-left">￥500</span>
-                    <span>针织衫（附飘带）</span>                   
-                </div>
-			</div>			
-		</div>
-		<div id="h_qiud_neir3">
-			<div class="h_qiud_xiaoneir1">
-				<img src="../img/home-qiud-img5.jpg" class="h_qiud_neir1-img1"/>
-				<div style="overflow:hidden;line-height:30px;text-align:center;">
-					<span class="pull-left">￥600</span> 
-                    <span>翻领牛仔外套</span>                                    
-                </div>
-			</div>			
-			<div class="h_qiud_xiaoneir2"> 
-				<img src="../img/home-qiud-img6.jpg" class="h_qiud_neir1-img2"/> 
-				<div style="overflow:hidden;line-height:30px;text-align:center;">
-					<span class="pull-left">￥500</span>
-                    <span>针织衫（附飘带）</span>                   
-                </div>
-			</div>			
-		</div>		
+		
 	</div>
 </template>
 
 <script>
+	import MyAjax from "@/md/MyAjax.js"
 	export default{
-		
+		data(){
+			return{
+				homeList:[]
+			}
+		},
+		mounted(){
+			var that = this;
+			var homeUrl = "http://girdear.cn/app/?callback=jQuery183036631858969477626_1512962883809&url=%2Fhome%2Flook&json=%7B%22page%22%3A1%2C%22count%22%3A26%2C%22sid%22%3A%22207e3949fcb18fa9cd044dbadc4bca886ad8d803%22%2C%22uid%22%3A%2284008%22%2C%22uname%22%3A%2215011346159%22%7D&_=1512962884245";
+			MyAjax.fetchJsonp(homeUrl,(data) => {
+				console.log(data.map.data);
+				that.homeList = data.map.data.list;
+	//			that.$store.commit(types.KIND_TYPE_LIST,data.map.data)
+			})
+		}
 	}
 </script>
 

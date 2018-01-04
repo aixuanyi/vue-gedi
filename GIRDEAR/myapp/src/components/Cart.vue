@@ -5,23 +5,23 @@
             <div class="btn_wrap4">
                 <div id="cartList">                    
                         <nav>
-                            <div class="q1">
+                            <div v-for="item in goodslist" class="q1">
                                 <div class="select" style="display:none">
-                                    <!--<img src="../images/shopselect_yes.png">-->
+                                    
                                 </div>
-                                <img class="shop_pic" src="http://girdear.cn/../images/201712/goods_img/59ae6b0a1421b.jpg">
+                                <img class="shop_pic" :src="item.img">
 
                                 <div class="content">
                                     <div>
-                                        <span class="content_span_top">哥弟女装2017  ￥320.00</span>
+                                        <span class="content_span_top">{{item.goods_name.slice(0,4)}}  {{item.goods_price}}</span>
                                     </div>
                                     <div>
-                                        <span>颜色:黑 尺码:M </span>
+                                        <span>{{item.goods_attr}}</span>
                                     </div>
                                     <div>
-                                        <img class="img1 btnReduc" data-id="338759" src="http://app.girdear.cn/mb/images/shop_num1.png">
-                                        <div class="productnum"><span class="spannum">1</span></div>
-                                        <img class="img3 btnAdd" data-id="338759" src="http://app.girdear.cn/mb/images/shop_num3.png">
+                                        <img class="img1 btnReduc" data-id="338759" src="http://app.girdear.cn/mb/images/shop_num1.png" >
+                                        <div class="productnum"><span class="spannum">{{item.goods_number}}</span></div>
+                                        <img class="img3 btnAdd" data-id="338759" src="http://app.girdear.cn/mb/images/shop_num3.png" >
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
             </div>
         </section>
         <div class="bottom">
-            <span style="margin-left: 10px;" id="goodsAmounts">合计：￥320.00</span>
+            <span style="margin-left: 10px;" id="goodsAmounts">合计：{{totalPrice.goods_amount}}</span>
             <div><span id="btnGoPay">去结算</span><img src="http://app.girdear.cn/mb/images/shop_pay.png"></div>
         </div>
 	</div>
@@ -47,13 +47,28 @@
 <script>
 	import MyAjax from "@/md/MyAjax.js"
 	export default {
-		mounted(){
-			/*var that = this;
+		data(){
+			return{
+				goodslist:[],
+				totalPrice:{},
+				
+			}
+		},
+		methods:{
 			
-			var cartUrl = "http://girdear.cn/app/?callback=jQuery18301482860520489655_1512569699397&url=%2Fcart%2Flist&json=%7B%22tag%22%3A%22no_login%22%2C%22sid%22%3A%22207e3949fcb18fa9cd044dbadc4bca886ad8d803%22%2C%22uid%22%3A%2284008%22%2C%22uname%22%3A%2215011346159%22%7D&_=1512569700036"
-			MyAjax.fetchJsonp(cartUrl,(data)=>{
-				console.log(data)
-			})*/
+		},
+		mounted(){
+			var that = this;
+			if(localStorage.getItem("userID")){
+				var  userID = localStorage.getItem("userID");
+				
+				var cartUrl = "http://girdear.cn/app/?callback=jQuery18302549055292685929_1512971391757&url=%2Fcart%2Flist&json=%7B%22tag%22%3A%22no_login%22%2C%22sid%22%3A%22e8f672dc4e588248ca1634f633e7297b903741c9%22%2C%22uid%22%3A%2284008%22%2C%22uname%22%3A%2215011346159%22%7D&_=1512971392079"
+				MyAjax.fetchJsonp(cartUrl,(data)=>{
+					console.log(data)
+					that.goodslist = data.map.data.goods_list;
+					that.totalPrice = data.map.data.total;
+				})
+			}
 		}
 	}
 </script>

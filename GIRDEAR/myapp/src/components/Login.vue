@@ -60,7 +60,7 @@ export default{
 		      }else{
 		        console.log(data)
 		        localStorage.setItem("userID",data.userID)
-		        that.$router.push("/home")
+		        that.$router.push("/user")
 		      }
 		      
 		    })

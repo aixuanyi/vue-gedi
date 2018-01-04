@@ -40,7 +40,7 @@
 					<div class="title" id="product_number">数量 ( 库存 {{goods_number}} 件) </div>
 					<div class="title margin-top">
 						<img class="img1" id="btnReduc" src="http://app.girdear.cn/mb/images/shop_num1.png" @click="reduceNum()">
-						<div class="productnum"><span class="spannum" id="spannum">{{cart_num}}</span></div>
+						<div class="productnum"><span class="spannum" id="spannum">{{number}}</span></div>
 						<img class="img3" id="btnAdd" src="http://app.girdear.cn/mb/images/shop_num3.png" @click="addNum()">
 					</div>
 					<div class="goodCount">
@@ -51,13 +51,32 @@
 		<article class="pd_list">
 			<ul>
 				<li id="liComments">
-					<span><img src="http://app.girdear.cn/mb/images/pinglun.png">用户评论(162)</span>
+					<router-link :to="{name:'pingjia',params:{goods_pid:id}}" tag="span"><img src="http://app.girdear.cn/mb/images/pinglun.png">用户评论</router-link>
 					<em><img src="http://app.girdear.cn/mb/images/next1.png"></em>
 				</li>
 			</ul>
 		</article>
 		<div id="v-html" v-html="html" style="width: 100%;">
-			{{html}}
+			
+		</div>
+		<div id="footer">
+			<article class="btn_fix">
+        <div id="qq_service" class="btf_an1">
+            <img src="http://app.girdear.cn/mb/images/img2017/LOGO3334.png">
+        </div>
+        <router-link class="btf_an1" to="/home">
+            <img src="http://app.girdear.cn/mb/images/img2017/LOGO3111.png">
+        </router-link>
+        <router-link class="btf_an1" style="border: none;" to="/user">
+            <img src="http://app.girdear.cn/mb/images/img2017/LOGO3222.png">
+        </router-link>
+        <div class="btf_an3" id="btn_shop_now">
+            <span>立即购买</span>
+        </div>
+        <div class="btf_an2" id="btn_addshop" @click="addCart()">
+            <span>加入购物车</span>
+        </div>
+    </article>
 		</div>
 	</div>
 </template>
@@ -81,12 +100,14 @@
 				detailBanner:[],
 				activeIndex:0,
 				currentIndex: 0,
-				cart_num:""
+				number:1,
+				id:""
 			}
 		},
 		mounted(){
 	      var that = this;
 	      var goods_id = this.$route.params.goods_id;
+	      
 	      var detailUrl = "http://girdear.cn/app/?callback=jQuery183004098796664461868_1512550608523&url=%2Fgoods&json=%7B%22goods_id%22%3A%22"+goods_id+"%22%2C%22page%22%3A1%2C%22count%22%3A3%2C%22sid%22%3A%22207e3949fcb18fa9cd044dbadc4bca886ad8d803%22%2C%22uid%22%3A%2284008%22%2C%22uname%22%3A%2215011346159%22%7D&_=1512550609029"
 	       MyAjax.fetchJsonp(detailUrl,(data) => {
 	        console.log(data.map)
@@ -99,27 +120,39 @@
 	        that.page_title = data.map.data.page_title;
 	        that.detailBanner = data.map.data.pictures;
 	        that.cart_num = data.map.data.cart_num*1 + 1;
+	        that.id = data.map.data.id;
 	      })
+	      
 	   },
 	   methods:{
 	   	changeIndex(index){
 	    	this.currentIndex = index;
+	    	
 	    },
 	    changeActive(index){
 	    	this.activeIndex = index;
+
 	    },
 	    addNum(){
-	    	this.cart_num++;
-	    	//http://girdear.cn/app/?callback=jQuery183002596382661525598_1512740526461&url=%2Fcart%2Fupdate&json=%7B%22rec_id%22%3A%22339101%22%2C%22new_number%22%3A4%2C%22tag%22%3A%22no_login%22%2C%22sid%22%3A%22207e3949fcb18fa9cd044dbadc4bca886ad8d803%22%2C%22uid%22%3A%2284008%22%2C%22uname%22%3A%2215011346159%22%7D&_=1512740797357  
+	    	this.number = this.number*1 + 1;
+	    	
 
 	    },
 	    reduceNum(){
 	    	
-	    	if(this.cart_num==1){
-	    		this.cart_num=1;
+	    	if(this.number==1){
+	    		this.number=1;
 	    	}else{
-	    		this.cart_num--;
+	    		this.number = this.number*1 - 1;
 	    	}
+	    },
+	    addCart(){
+	    	var goods_id = this.$route.params.goods_id;
+	    	var  userID = localStorage.getItem("userID");
+	    	var pageUrl = "http://girdear.cn/app/?callback=jQuery18308698674484292623_1512970677108&url=%2Fcart%2Fcreate&json=%7B%22goods_id%22%3A%22"+goods_id+"%22%2C%22number%22%3A%22"+this.number+"%22%2C%22spec%22%3A%2216425%2C16427%22%2C%22tag%22%3A%22no_login%22%2C%22sid%22%3A%22207e3949fcb18fa9cd044dbadc4bca886ad8d803%22%2C%22uid%22%3A%2284008%22%2C%22uname%22%3A%2215011346159%22%7D&_=1512970797690";
+	      MyAjax.fetchJsonp(pageUrl,(data) =>{
+	      	console.log(data)
+	      })
 	    }
 	   }
 	}
@@ -317,4 +350,58 @@
 			}
 		}
 	}
+	.btn_fix {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    border-top: 1px #D1B587 solid;
+    background-color: white;
+    .btf_an1{
+    	width: 15%; 
+    	height: 50px; 
+    	display: block; 
+    	position: relative; 
+    	float: left; 
+    	border-right: 1px #ADADAD solid; 
+    	background: #FFFFFF;
+    	img{
+    		width: 50px; 
+			height: 50px; 
+			display: block; 
+			position: absolute; 
+			left: 50%; 
+			margin-left: -25px;
+    	}
+    }
+	
+	.btf_an2{
+		width: 28%; 
+		height: 50px; 
+		display: block; 
+		position: relative; 
+		float: right; 
+		background:#ec1e70; 
+		color: white; 
+		line-height: 50px; 
+		font-size: 12px; 
+		text-align: center;
+	}
+	.btf_an3{
+		width: 25%; 
+		height: 50px; 
+		display: block; 
+		position: relative; 
+		float: right; 
+		background:#2a2018; 
+		color: white; 
+		line-height: 50px; 
+		font-size: 20px; 
+		text-align: center;
+		span{
+			font-size: 12px;
+		}
+	}
+
+}
 </style>
